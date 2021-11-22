@@ -1,4 +1,4 @@
-name: 'Repo Settings Sync'
+name: 'Repo Settings Manager'
 description: 'Github Action to setup repository settings'
 author: 'seblaporte'
 branding:
