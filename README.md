@@ -5,9 +5,6 @@
 
 <b>Github Action to setup repositories settings and keep them in sync</b>
 
-[![version](https://img.shields.io/github/v/release/kbrashears5/github-action-repo-settings-sync)](https://img.shields.io/github/v/release/kbrashears5/github-action-repo-settings-sync)
-[![Build Status](https://dev.azure.com/kbrashears5/github/_apis/build/status/kbrashears5.github-action-repo-settings-sync?branchName=master)](https://dev.azure.com/kbrashears5/github/_build/latest?definitionId=29&branchName=master)
-
 </div>
 
 
@@ -31,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Repo Setup
-        uses: kbrashears5/github-action-repo-settings-sync@v1.0.0
+        uses: seblaporte/github-action-repo-settings-sync@v1.0.0
         with:
           REPOSITORIES: |
-            kbrashears5/github-action-repo-settings-sync
+            seblaporte/github-action-repo-settings-sync
           ALLOW_ISSUES: 'true'
           ALLOW_PROJECTS: 'true'
           ALLOW_WIKI: 'true'
@@ -42,7 +39,9 @@ jobs:
           MERGE_COMMIT: 'true'
           REBASE_MERGE: 'true'
           DELETE_HEAD: 'false'
-          BRANCH_PROTECTION_NAME: 'master'
+          BRANCHES_PROTECTION_NAME: |
+            'master'
+            'dev'
           BRANCH_PROTECTION_REQUIRED_REVIEWERS: '1'
           BRANCH_PROTECTION_DISMISS: 'true'
           BRANCH_PROTECTION_CODE_OWNERS: 'true'
@@ -61,7 +60,7 @@ jobs:
 | MERGE_COMMIT | false | true | Whether or not to allow merge commits on the repo |
 | REBASE_MERGE | false | true | Whether or not to allow rebase merges on the repo |
 | DELETE_HEAD | false | false | Whether or not to delete head branch after merges |
-| BRANCH_PROTECTION_NAME | false | 'master' | Branch name pattern for branch protection rule |
+| BRANCHES_PROTECTION_NAME | false | 'master' | Branches name pattern for branch protection rule |
 | BRANCH_PROTECTION_REQUIRED_REVIEWERS | false | 1 | Number of required reviewers for branch protection rule |
 | BRANCH_PROTECTION_DISMISS | false | true | Dismiss stale pull request approvals when new commits are pushed |
 | BRANCH_PROTECTION_CODE_OWNERS | false | true | Require review from Code Owners |

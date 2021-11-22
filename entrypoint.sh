@@ -31,8 +31,9 @@ REBASE_MERGE=$INPUT_REBASE_MERGE
 echo "Rebase Merge           : $REBASE_MERGE"
 DELETE_HEAD=$INPUT_DELETE_HEAD
 echo "Delete Head            : $DELETE_HEAD"
-BRANCH_PROTECTION_NAME=$INPUT_BRANCH_PROTECTION_NAME
-echo "Branch Protection Name : $BRANCH_PROTECTION_NAME"
+RAW_BRANCHES_PROTECTION_NAME="$INPUT_BRANCHES_PROTECTION_NAME"
+BRANCHES_PROTECTION_NAME=($RAW_BRANCHES_PROTECTION_NAME)
+echo "Branches Protection Name : $BRANCHES_PROTECTION_NAME"
 BRANCH_PROTECTION_REQUIRED_REVIEWERS=$INPUT_BRANCH_PROTECTION_REQUIRED_REVIEWERS
 echo "Required Reviewers     : $BRANCH_PROTECTION_REQUIRED_REVIEWERS"
 BRANCH_PROTECTION_DISMISS=$INPUT_BRANCH_PROTECTION_DISMISS
@@ -110,31 +111,36 @@ for repository in "${REPOSITORIES[@]}"; do
 
     echo " "
 
-    echo "Setting [${BRANCH_PROTECTION_NAME}] branch protection rules"
-    
-    # the argjson instead of just arg lets us pass the values not as strings
-    jq -n \
-    --argjson enforceAdmins $BRANCH_PROTECTION_ENFORCE_ADMINS \
-    --argjson dismissStaleReviews $BRANCH_PROTECTION_DISMISS \
-    --argjson codeOwnerReviews $BRANCH_PROTECTION_CODE_OWNERS \
-    --argjson reviewCount $BRANCH_PROTECTION_REQUIRED_REVIEWERS \
-    '{
-        required_status_checks:null,
-        enforce_admins:$enforceAdmins,
-        required_pull_request_reviews:{
-            dismiss_stale_reviews:$dismissStaleReviews,
-            require_code_owner_reviews:$codeOwnerReviews,
-            required_approving_review_count:$reviewCount
-        },
-        restrictions:null
-    }' \
-    | curl -d @- \
-        -X PUT \
-        -H "Accept: application/vnd.github.luke-cage-preview+json" \
-        -H "Content-Type: application/json" \
-        -u ${USERNAME}:${GITHUB_TOKEN} \
-        --silent \
-        ${GITHUB_API_URL}/repos/${repository}/branches/${BRANCH_PROTECTION_NAME}/protection
+    # loop through all the branches name
+    for branch_name in "${BRANCHES_PROTECTION_NAME[@]}"; do
+
+        echo "Setting ${branch_name} branch protection rule"
+        
+        # the argjson instead of just arg lets us pass the values not as strings
+        jq -n \
+        --argjson enforceAdmins $BRANCH_PROTECTION_ENFORCE_ADMINS \
+        --argjson dismissStaleReviews $BRANCH_PROTECTION_DISMISS \
+        --argjson codeOwnerReviews $BRANCH_PROTECTION_CODE_OWNERS \
+        --argjson reviewCount $BRANCH_PROTECTION_REQUIRED_REVIEWERS \
+        '{
+            required_status_checks:null,
+            enforce_admins:$enforceAdmins,
+            required_pull_request_reviews:{
+                dismiss_stale_reviews:$dismissStaleReviews,
+                require_code_owner_reviews:$codeOwnerReviews,
+                required_approving_review_count:$reviewCount
+            },
+            restrictions:null
+        }' \
+        | curl -d @- \
+            -X PUT \
+            -H "Accept: application/vnd.github.luke-cage-preview+json" \
+            -H "Content-Type: application/json" \
+            -u ${USERNAME}:${GITHUB_TOKEN} \
+            --silent \
+            ${GITHUB_API_URL}/repos/${repository}/branches/${branch_name}/protection
+
+    done
 
     echo "Completed [${repository}]"
     echo "::endgroup::"

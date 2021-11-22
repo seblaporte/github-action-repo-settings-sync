@@ -1,9 +1,9 @@
 name: 'Repo Settings Sync'
 description: 'Github Action to setup repository settings'
-author: 'kbrashears5'
+author: 'seblaporte'
 branding:
   icon: 'upload-cloud'
-  color: 'purple'
+  color: 'blue'
 inputs:
   REPOSITORIES:
     description: 'Github repositories to setup. Default will get all public repositories for your username'
@@ -37,8 +37,8 @@ inputs:
     description: 'Whether or not to delete head branch after merges'
     required: false
     default: 'false'
-  BRANCH_PROTECTION_NAME:
-    description: 'Branch name pattern for branch protection rule'
+  BRANCHES_PROTECTION_NAME:
+    description: 'Branches name pattern for branches protection rule'
     required: false
     default: 'master'
   BRANCH_PROTECTION_REQUIRED_REVIEWERS:
