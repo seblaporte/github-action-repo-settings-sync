@@ -39,6 +39,7 @@ jobs:
           MERGE_COMMIT: 'true'
           REBASE_MERGE: 'true'
           DELETE_HEAD: 'false'
+          SQUASH_PR_TITLE: 'false'
           BRANCHES_PROTECTION_NAME: |
             'master'
             'dev'
@@ -60,6 +61,7 @@ jobs:
 | MERGE_COMMIT | false | true | Whether or not to allow merge commits on the repo |
 | REBASE_MERGE | false | true | Whether or not to allow rebase merges on the repo |
 | DELETE_HEAD | false | false | Whether or not to delete head branch after merges |
+| SQUASH_PR_TITLE | false | false | Whether or not to use the PR title as default commit name when using squash-merge |
 | BRANCHES_PROTECTION_NAME | false | 'master' | Branches name pattern for branch protection rule |
 | BRANCH_PROTECTION_REQUIRED_REVIEWERS | false | 1 | Number of required reviewers for branch protection rule |
 | BRANCH_PROTECTION_DISMISS | false | true | Dismiss stale pull request approvals when new commits are pushed |

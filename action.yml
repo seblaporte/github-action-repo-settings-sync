@@ -37,6 +37,10 @@ inputs:
     description: 'Whether or not to delete head branch after merges'
     required: false
     default: 'false'
+  SQUASH_PR_TITLE:
+    description: 'Whether or not to use the PR title as default commit name when using squash-merge'
+    required: false
+    default: 'false'
   BRANCHES_PROTECTION_NAME:
     description: 'Branches name pattern for branches protection rule'
     required: false

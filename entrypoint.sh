@@ -31,6 +31,8 @@ REBASE_MERGE=$INPUT_REBASE_MERGE
 echo "Rebase Merge           : $REBASE_MERGE"
 DELETE_HEAD=$INPUT_DELETE_HEAD
 echo "Delete Head            : $DELETE_HEAD"
+SQUASH_PR_TITLE=$INPUT_SQUASH_PR_TITLE
+echo "Squash PR title        : $SQUASH_PR_TITLE"
 RAW_BRANCHES_PROTECTION_NAME="$INPUT_BRANCHES_PROTECTION_NAME"
 BRANCHES_PROTECTION_NAME=($RAW_BRANCHES_PROTECTION_NAME)
 echo "Branches Protection Name : $BRANCHES_PROTECTION_NAME"
@@ -92,6 +94,7 @@ for repository in "${REPOSITORIES[@]}"; do
     --argjson mergeCommit $MERGE_COMMIT \
     --argjson rebaseMerge $REBASE_MERGE \
     --argjson deleteHead $DELETE_HEAD \
+    --argjson squashPrTitle $SQUASH_PR_TITLE \
     '{
         has_issues:$allowIssues,
         has_projects:$allowProjects,
@@ -100,6 +103,7 @@ for repository in "${REPOSITORIES[@]}"; do
         allow_merge_commit:$mergeCommit,
         allow_rebase_merge:$rebaseMerge,
         delete_branch_on_merge:$deleteHead,
+        use_squash_pr_title_as_default:$squashPrTitle,
     }' \
     | curl -d @- \
         -X PATCH \
